@@ -1,4 +1,4 @@
-import { LogOutIcon } from 'lucide-react';
+import { LogOutIcon, UserRoundIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { PropsWithChildren } from 'react';
 
@@ -33,6 +33,9 @@ export function UserMenu({ user, children }: Props) {
 			<DropdownMenuContent>
 				<DropdownMenuLabel>{user.username}</DropdownMenuLabel>
 				<DropdownMenuSeparator />
+				<DropdownMenuItem onClick={() => router.push(`/user/${user.id}`)}>
+					<UserRoundIcon /> Профиль
+				</DropdownMenuItem>
 				<DropdownMenuItem onClick={handleLogout}>
 					<LogOutIcon /> Выйти
 				</DropdownMenuItem>
