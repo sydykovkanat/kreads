@@ -23,12 +23,6 @@ jobs:
           bun i
         working-directory: backend
 
-      - name: Install frontend dependencies
-        run: |
-          echo "### Installing frontend dependencies ###"
-          bun i
-        working-directory: frontend
-
       - name: Restart backend
         run: |
           echo "### Restart backend... ###"
@@ -43,6 +37,12 @@ jobs:
             sleep 5
           done
 
+      - name: Install frontend dependencies
+        run: |
+          echo "### Installing frontend dependencies ###"
+          bun i
+        working-directory: frontend
+
       - name: Build frontend
         run: |
           echo "### Build frontend... ###"
@@ -52,7 +52,7 @@ jobs:
       - name: Restart frontend
         run: |
           echo "### Restart frontend... ###"
-          pm2 restart 2
+          pm2 restart 1
         working-directory: frontend
 
       - name: Wait for frontend to be ready
@@ -63,6 +63,6 @@ jobs:
             sleep 5
           done
 
-      - name: Finish♥️♥️♥️
+      - name: Finish
         run: |
-          echo "♥️♥️♥️ Поздравляю тебя милый мой! У тебя все получилось ♥️♥️♥️"
+          echo "Successful application build 🎉"
