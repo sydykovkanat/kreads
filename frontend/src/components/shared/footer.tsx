@@ -14,7 +14,7 @@ export function Footer() {
 				<Button
 					size={'lg'}
 					variant={'secondary'}
-					className={'border bg-secondary/10 backdrop-blur-2xl'}
+					className={'border rounded-full bg-secondary/10 backdrop-blur-2xl'}
 				>
 					<PlusIcon />
 				</Button>
