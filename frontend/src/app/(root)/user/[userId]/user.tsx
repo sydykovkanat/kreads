@@ -20,12 +20,13 @@ export function User({ userId }: Props) {
 	const { isLoading: isProfileLoading, user: currentUser } = useProfile();
 	const { isLoading: isUserLoading, user } = useGetUser(userId);
 	const { users, isLoading: isUsersLoading } = useGetUsers();
+	const excludedCurrentUserUsers = users?.filter((i) => i.id !== user?.id);
 
 	if (isProfileLoading || isUserLoading || isUsersLoading) {
 		return <Loader absolute />;
 	}
 
-	if (!user || !currentUser || users === undefined) {
+	if (!user || !currentUser || excludedCurrentUserUsers === undefined) {
 		return notFound();
 	}
 
@@ -55,7 +56,7 @@ export function User({ userId }: Props) {
 				{/*)}*/}
 			</div>
 
-			{users.length > 0 && (
+			{excludedCurrentUserUsers.length > 0 && (
 				<>
 					<Separator />
 
@@ -65,7 +66,7 @@ export function User({ userId }: Props) {
 
 					<Separator />
 					<section className={'px-6 py-4'}>
-						<UsersList users={users} />
+						<UsersList users={excludedCurrentUserUsers} />
 					</section>
 				</>
 			)}

@@ -41,7 +41,7 @@ export function PostCard({ post }: Props) {
 
 				<div>
 					<p
-						className={'break-all hyphens-manual'}
+						className={'break-all hyphens-manual whitespace-pre-wrap'}
 						style={{
 							marginBottom: post.images.length > 0 ? '8px' : 0,
 						}}
