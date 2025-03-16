@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Body,
+  ConflictException,
   Controller,
   HttpCode,
   Post,
@@ -10,10 +11,11 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Request, Response } from 'express';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
+
+import { AwsS3Service } from '../aws-s3/aws-s3.service';
 
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
@@ -21,7 +23,11 @@ import { RegisterDto } from './dto/register.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly configService: ConfigService,
+    private readonly awsService: AwsS3Service,
+  ) {}
 
   @HttpCode(200)
   @Post('login')
@@ -38,33 +44,25 @@ export class AuthController {
 
   @HttpCode(200)
   @Post('register')
-  @UseInterceptors(
-    FileInterceptor('avatar', {
-      storage: diskStorage({
-        destination: './uploads/avatars',
-        filename: (req, file, callback) => {
-          const uniqueSuffix =
-            Date.now() + '-' + Math.round(Math.random() * 1e9);
-          callback(null, uniqueSuffix + extname(file.originalname));
-        },
-      }),
-      limits: { fileSize: 5 * 1024 * 1024 },
-    }),
-  )
+  @UseInterceptors(FileInterceptor('avatar'))
   async register(
     @Body() dto: RegisterDto,
     @Res({ passthrough: true }) res: Response,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() file: Express.MulterS3.File,
   ) {
     if (!file) {
       throw new BadRequestException('Аватар обязателен');
     }
 
-    const avatarUrl = `/uploads/avatars/${file.filename}`;
+    const uploadedFile = await this.awsService.uploadFile(file);
+
+    if (!uploadedFile) {
+      throw new ConflictException('Произошла ошибка при загрузке аватара');
+    }
 
     const { refreshToken, ...response } = await this.authService.register(
       dto,
-      avatarUrl,
+      uploadedFile.Location,
     );
 
     this.authService.addRefreshTokenToResponse(res, refreshToken);
