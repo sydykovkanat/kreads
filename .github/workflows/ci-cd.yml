@@ -22,6 +22,12 @@ jobs:
           echo "### Installing backend dependencies ###"
           bun i
         working-directory: backend
+
+      - name: Copy secrets for backend
+        run: |
+          echo "### Copy backend secrets variables... ###"
+          cp /home/kanat/secrets/.env-kreads-backend /home/kanat/actions-runner/_work/kreads/kreads/backend/.env
+        working-directory: backend
         
       - name: Build backend
         run: |
@@ -47,6 +53,12 @@ jobs:
         run: |
           echo "### Installing frontend dependencies ###"
           bun i
+        working-directory: frontend
+
+      - name: Copy secrets for frontend
+        run: |
+          echo "### Copy frontend secrets variables... ###"
+          cp /home/kanat/secrets/.env-kreads-frontend /home/kanat/actions-runner/_work/kreads/kreads/frontend/.env
         working-directory: frontend
 
       - name: Build frontend
