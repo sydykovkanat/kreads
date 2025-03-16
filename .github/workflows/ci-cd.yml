@@ -22,18 +22,24 @@ jobs:
           echo "### Installing backend dependencies ###"
           bun i
         working-directory: backend
+        
+      - name: Build backend
+        run: |
+          echo "### Build backend ###"
+          bun run build
+        working-directory: backend
 
       - name: Restart backend
         run: |
-          echo "### Restart backend... ###"
+          echo "### Restart backend ###"
           pm2 restart 0
         working-directory: backend
 
       - name: Wait for backend to be ready
         run: |
-          echo "### Waiting for backend to be ready... ###"
+          echo "### Waiting for backend to be ready ###"
           while ! nc -z localhost 8000; do
-            echo "Backend is not ready yet. Retrying in 5 seconds..."
+            echo "Backend is not ready yet. Retrying in 5 seconds"
             sleep 5
           done
 
@@ -45,21 +51,21 @@ jobs:
 
       - name: Build frontend
         run: |
-          echo "### Build frontend... ###"
-          npm run build
+          echo "### Build frontend ###"
+          bun run build
         working-directory: frontend
 
       - name: Restart frontend
         run: |
-          echo "### Restart frontend... ###"
+          echo "### Restart frontend ###"
           pm2 restart 1
         working-directory: frontend
 
       - name: Wait for frontend to be ready
         run: |
-          echo "### Waiting for frontend to be ready... ###"
+          echo "### Waiting for frontend to be ready ###"
           while ! nc -z localhost 3000; do
-            echo "Frontend is not ready yet. Retrying in 5 seconds..."
+            echo "Frontend is not ready yet. Retrying in 5 seconds"
             sleep 5
           done
 
