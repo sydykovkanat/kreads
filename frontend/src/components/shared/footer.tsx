@@ -10,7 +10,7 @@ import { Button } from '@/components/ui';
 import { useProfile } from '@/hooks/use-profile';
 
 export function Footer() {
-	const { user, isLoading } = useProfile();
+	const { user } = useProfile();
 
 	return (
 		<div
@@ -30,37 +30,56 @@ export function Footer() {
 				</Button>
 			</Link>
 
-			<CreatePostDialog>
-				<Button
-					size={'lg'}
-					variant={'secondary'}
-					className={
-						'border text-muted-foreground rounded-full bg-secondary/50 backdrop-blur-2xl'
-					}
-				>
-					<PlusIcon />
-				</Button>
-			</CreatePostDialog>
-
-			{isLoading ? (
-				<div className={'h-12 w-[50px] grid place-items-center'}>
-					<Loader />
-				</div>
+			{user ? (
+				<CreatePostDialog>
+					<Button
+						size={'lg'}
+						variant={'secondary'}
+						className={
+							'border text-muted-foreground rounded-full bg-secondary/50 backdrop-blur-2xl'
+						}
+					>
+						<PlusIcon />
+					</Button>
+				</CreatePostDialog>
 			) : (
-				!isLoading &&
-				user && (
-					<Link href={`/user/${user.id}`}>
-						<Button
-							size={'lg'}
-							variant={'secondary'}
-							className={
-								'border text-muted-foreground rounded-full bg-secondary/50 backdrop-blur-2xl'
-							}
-						>
-							<UserRoundIcon />
-						</Button>
-					</Link>
-				)
+				<Link href={'/auth'}>
+					<Button
+						size={'lg'}
+						variant={'secondary'}
+						className={
+							'border text-muted-foreground rounded-full bg-secondary/50 backdrop-blur-2xl'
+						}
+					>
+						<PlusIcon />
+					</Button>
+				</Link>
+			)}
+
+			{user ? (
+				<Link href={`/user/${user.id}`}>
+					<Button
+						size={'lg'}
+						variant={'secondary'}
+						className={
+							'border text-muted-foreground rounded-full bg-secondary/50 backdrop-blur-2xl'
+						}
+					>
+						<UserRoundIcon />
+					</Button>
+				</Link>
+			) : (
+				<Link href={'/auth'}>
+					<Button
+						size={'lg'}
+						variant={'secondary'}
+						className={
+							'border text-muted-foreground rounded-full bg-secondary/50 backdrop-blur-2xl'
+						}
+					>
+						<UserRoundIcon />
+					</Button>
+				</Link>
 			)}
 		</div>
 	);

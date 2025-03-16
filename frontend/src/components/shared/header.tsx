@@ -3,11 +3,12 @@
 import { Avatar } from '@/components/shared/avatar';
 import { Loader } from '@/components/shared/loader';
 import { UserMenu } from '@/components/shared/user-menu';
+import { Button } from '@/components/ui';
 
 import { useProfile } from '@/hooks/use-profile';
 
 export function Header() {
-	const { user, isLoading } = useProfile();
+	const { user } = useProfile();
 
 	return (
 		<header
@@ -27,16 +28,12 @@ export function Header() {
 			</h4>
 
 			<div className={'size-10 grid place-items-center'}>
-				{isLoading ? (
-					<Loader />
-				) : (
-					user && (
-						<UserMenu user={user}>
-							<div>
-								<Avatar src={user.avatar} alt={user.username} />
-							</div>
-						</UserMenu>
-					)
+				{user && (
+					<UserMenu user={user}>
+						<div>
+							<Avatar src={user.avatar} alt={user.username} />
+						</div>
+					</UserMenu>
 				)}
 			</div>
 		</header>
