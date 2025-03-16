@@ -1,5 +1,7 @@
 export * from './container';
 export * from './create-post-fields';
+export * from './users-list';
+export * from './user-item';
 export * from './post-card';
 export * from './header';
 export * from './avatar';

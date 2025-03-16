@@ -18,7 +18,7 @@ async function bootstrap() {
   );
   app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
   app.enableCors({
-    origin: [process.env.CLIENT_URL, 'http://localhost:3000'],
+    origin: [process.env.CLIENT_URL],
     credentials: true,
     exposedHeaders: 'set-cookie',
   });

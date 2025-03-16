@@ -13,8 +13,6 @@ class AuthService {
 	async main(type: 'login' | 'register', data: IAuthForm) {
 		const isLogin = type === 'login';
 
-		console.log(data);
-
 		const response = await axiosClassic<IAuthResponse>({
 			url: API_URL.auth(`/${type}`),
 			method: 'POST',

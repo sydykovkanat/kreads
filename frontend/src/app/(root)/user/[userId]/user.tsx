@@ -5,9 +5,11 @@ import { notFound } from 'next/navigation';
 
 import { PostCard } from '@/components/shared';
 import { Loader } from '@/components/shared/loader';
+import { UsersList } from '@/components/shared/users-list';
 import { Separator } from '@/components/ui';
 
 import { useGetUser } from '@/hooks/queries/user/use-get-user';
+import { useGetUsers } from '@/hooks/queries/user/use-get-users';
 import { useProfile } from '@/hooks/use-profile';
 
 interface Props {
@@ -17,12 +19,13 @@ interface Props {
 export function User({ userId }: Props) {
 	const { isLoading: isProfileLoading, user: currentUser } = useProfile();
 	const { isLoading: isUserLoading, user } = useGetUser(userId);
+	const { users, isLoading: isUsersLoading } = useGetUsers();
 
-	if (isProfileLoading || isUserLoading) {
+	if (isProfileLoading || isUserLoading || isUsersLoading) {
 		return <Loader absolute />;
 	}
 
-	if (!user || !currentUser) {
+	if (!user || !currentUser || users === undefined) {
 		return notFound();
 	}
 
@@ -51,6 +54,21 @@ export function User({ userId }: Props) {
 				{/*	</Button>*/}
 				{/*)}*/}
 			</div>
+
+			{users.length > 0 && (
+				<>
+					<Separator />
+
+					<h4 className={'font-medium py-2 px-6 bg-neutral-950/20'}>
+						Присоединяйтесь к новым друзьям! 🤪
+					</h4>
+
+					<Separator />
+					<section className={'px-6 py-4'}>
+						<UsersList users={users} />
+					</section>
+				</>
+			)}
 
 			<div>
 				<Separator />

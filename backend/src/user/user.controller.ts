@@ -15,6 +15,11 @@ export class UserController {
     return this.userService.getById(id);
   }
 
+  @Get()
+  async getAll() {
+    return this.userService.getAll();
+  }
+
   @Get('/:id')
   async getById(@Param('id') userId: string) {
     return this.userService.getById(userId);

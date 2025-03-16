@@ -8,6 +8,14 @@ import { PrismaService } from '../prisma.service';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
+  async getAll() {
+    return this.prisma.user.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
+
   async getById(id: string) {
     return this.prisma.user.findUnique({
       where: {

@@ -40,13 +40,14 @@ export function PostCard({ post }: Props) {
 				</div>
 
 				<div>
-					<pre
-						className={'font-sans leading-none'}
+					<p
+						className={'break-all hyphens-manual'}
 						style={{
 							marginBottom: post.images.length > 0 ? '8px' : 0,
 						}}
-						dangerouslySetInnerHTML={{ __html: post.content }}
-					/>
+					>
+						{post.content}
+					</p>
 
 					{post.images.length > 0 && (
 						<ScrollArea className={'w-full rounded-xl pb-3'}>
